@@ -5,6 +5,9 @@
     --navbar-direction: row;
 
     --main-page-margin: 4.5em;
+
+    --twitch-height: 360px;
+    --twitch-width: 640px;
   }
 }
 
@@ -15,6 +18,9 @@
     --navbar-direction: column;
 
     --main-page-margin: 3em;
+
+    --twitch-height: 225;
+    --twitch-width: 400;
   }
 }
 
@@ -81,4 +87,9 @@ div.main-page {
 
 img.site-logo {
   margin: 7px;
+}
+
+iframe.twitch-iframe {
+  height: var(--twitch-height);
+  width: var(--twitch-width);
 }

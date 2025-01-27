@@ -50,7 +50,7 @@ const Navbar = () => {
           />
         </Link>
         <Link href="YouTube">YouTube</Link>
-              priority
+        <Link href="Twitch">Twitch</Link>
             />
           </Link>
           <Link href="YouTube">YouTube</Link>
