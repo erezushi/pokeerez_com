@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import VideoEmbed from './VideoEmbed';
 import { Suspense } from 'react';
+import { Skeleton } from '@mui/material';
 
 export const metadata: Metadata = {
   title: 'YouTube',
 };
 
-const { YOUTUBE_API_KEY } = process.env;
 
 const page = () => {
   return (
@@ -21,8 +21,8 @@ const page = () => {
       <br />
       My latest uploaded video:
       <br />
-      <Suspense>
-        <VideoEmbed apiKey={YOUTUBE_API_KEY!} type="video" />
+      <Suspense fallback={<Skeleton variant='rectangular' className='youtube-skeleton video' />}>
+        <VideoEmbed type="video" />
       </Suspense>
       <br />
       <br />
@@ -31,8 +31,8 @@ const page = () => {
       <br />
       My latest live-stream:
       <br />
-      <Suspense>
-        <VideoEmbed apiKey={YOUTUBE_API_KEY!} type="live" />
+      <Suspense fallback={<Skeleton variant='rectangular' className='youtube-skeleton live' />}>
+        <VideoEmbed type="live" />
       </Suspense>
       <br />
       <br />
@@ -40,8 +40,8 @@ const page = () => {
       <br />
       My latest short:
       <br />
-      <Suspense>
-        <VideoEmbed apiKey={YOUTUBE_API_KEY!} type="short" />
+      <Suspense fallback={<Skeleton variant='rectangular' className='youtube-skeleton short' />}>
+        <VideoEmbed type="short" />
       </Suspense>
     </>
   );

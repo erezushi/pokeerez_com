@@ -1,15 +1,13 @@
-'use client';
-
-import { Skeleton } from '@mui/material';
 import React from 'react';
-import useSWR from 'swr';
+import { neon } from '@neondatabase/serverless';
 
 import './VideoEmbed.css';
 
 interface IVideoEmbedProps {
-  apiKey: string;
   type: 'short' | 'video' | 'live';
 }
+
+const { YOUTUBE_API_KEY, DATABASE_URL } = process.env;
 
 const baseUrl = 'https://youtube.googleapis.com/youtube/v3/search';
 
@@ -38,39 +36,45 @@ const typeParams: Record<
   },
 };
 
-const fetcher = (type: IVideoEmbedProps['type'], apiKey: string) =>
-  fetch(
+const VideoEmbed = async (props: IVideoEmbedProps) => {
+  const { type } = props;
+
+  const youtubeRes = await fetch(
     `${baseUrl}?${Object.entries({
-      key: apiKey,
+      key: YOUTUBE_API_KEY,
       ...baseParams,
       ...typeParams[type],
     })
       .map(([key, value]) => `${key}=${value}`)
       .join('&')}`,
-  ).then((res) => res.json());
-
-const VideoEmbed = (props: IVideoEmbedProps) => {
-  const { apiKey, type } = props;
-
-  const { data, error, isLoading } = useSWR(type, (type: IVideoEmbedProps['type']) =>
-    fetcher(type, apiKey),
   );
+  const youtubeData = await youtubeRes.json();
 
-  if (isLoading)
-    return (
-      <Skeleton
-        className={`youtube-skeleton ${type}`}
-        variant="rectangular"
-      />
-    );
-  if (error) return <div>Failed to load</div>;
-  if (data.error)
-    return <div className="data-error">{data.error.message.replace(/<.*?>/g, '')}</div>;
+  const sql = neon(DATABASE_URL!);
+
+  let videoId: string;
+
+  if (youtubeData.error) {
+    try {
+      const idRow = (await sql(`SELECT * FROM "VideoIDs" WHERE type='${type}'`))[0] as {
+        type: IVideoEmbedProps['type'];
+        id: string;
+      };
+  
+      videoId = idRow.id;
+    } catch (error) {
+      return <div className="data-error">Failed to retrieve video data</div>
+    }
+  } else {
+    videoId = youtubeData.items[0].id.videoId;
+
+    await sql(`UPDATE "videoIDs" SET id = '${videoId}' WHERE type = '${type}'`);
+  }
 
   return (
     <iframe
-      className={`youtube-skeleton ${type}`}
-      src={`https://www.youtube.com/embed/${data.items[0].id.videoId}`}
+      className={`youtube-embed ${type}`}
+      src={`https://www.youtube.com/embed/${videoId}`}
       title="YouTube video player"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerPolicy="strict-origin-when-cross-origin"
