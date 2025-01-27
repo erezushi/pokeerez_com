@@ -11,16 +11,7 @@ export const metadata: Metadata = {
     default: 'PokéErez',
   },
   description: 'Official website for Pokétuber and streamer PokéErez.',
-  keywords: [
-    'Erez',
-    'PokeErez',
-    'ErOr Bros.',
-    'social',
-    'YouTube',
-    'Twitch',
-    'Twitter',
-    'Bluesky',
-  ],
+  keywords: ['Erez', 'PokeErez', 'ErOr Bros.', 'social', 'YouTube', 'Twitch', 'Twitter', 'Bluesky'],
 };
 
 export const viewport: Viewport = {

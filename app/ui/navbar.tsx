@@ -24,7 +24,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsMenuCollapsed(mediaQuery.matches);
-  }, []);
+  }, [mediaQuery.matches]);
 
   return (
     <div

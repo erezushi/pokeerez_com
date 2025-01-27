@@ -1,84 +1,84 @@
 @media screen and (min-width: 466px) {
-    :root {
-        --navbar-width: 100vw;
-        --navbar-height: 4em;
-        --navbar-direction: row;
+  :root {
+    --navbar-width: 100vw;
+    --navbar-height: 4em;
+    --navbar-direction: row;
 
-        --main-page-margin: 4.5em;
-    }
+    --main-page-margin: 4.5em;
+  }
 }
 
 @media screen and (max-width: 465px) {
-    :root {
-        --navbar-width: 7em;
-        --navbar-height: 100vh;
-        --navbar-direction: column;
+  :root {
+    --navbar-width: 7em;
+    --navbar-height: 100vh;
+    --navbar-direction: column;
 
-        --main-page-margin: 3em;
-    }
+    --main-page-margin: 3em;
+  }
 }
 
 div.navbar-container {
-    height: var(--navbar-height);
-    width: var(--navbar-width);
-    background-color: red;
+  height: var(--navbar-height);
+  width: var(--navbar-width);
+  background-color: red;
 
-    display: flex;
-    flex-direction: var(--navbar-direction);
-    align-items: center;
+  display: flex;
+  flex-direction: var(--navbar-direction);
+  align-items: center;
 
-    position: fixed;
-    top: 0;
-    left: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
 
-    transition: width 0.5s;
+  transition: width 0.5s;
 }
 
 div.navbar-container.collapsed {
-    width: 0;
+  width: 0;
 }
 
 div.navbar {
-    display: flex;
-    flex-direction: var(--navbar-direction);
-    align-items: center;
+  display: flex;
+  flex-direction: var(--navbar-direction);
+  align-items: center;
 }
 
 div.navbar a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 
-    margin: 0.5em;
+  margin: 0.5em;
 }
 
 div.navbar-container.collapsed .navbar {
-    display: none;
+  display: none;
 }
 
 button.navbar-collapse-button {
-    margin-top: 1em;
-    padding: 0;
-    
-    transition: margin 0.5s;
+  margin-top: 1em;
+  padding: 0;
+
+  transition: margin 0.5s;
 }
 
 button.navbar-collapse-button svg {
-    transition: color 0.5s;
+  transition: color 0.5s;
 }
 
 .navbar-container.collapsed button.navbar-collapse-button {
-    margin-left: 5em;
+  margin-left: 5em;
 }
 
 div.main-page {
-    margin-top: var(--main-page-margin);
-    padding: 1em;
-    min-height: 37em;
+  margin-top: var(--main-page-margin);
+  padding: 1em;
+  min-height: 37em;
 
-    border: 2px solid black;
-    border-radius: 2em;
+  border: 2px solid black;
+  border-radius: 2em;
 }
 
 img.site-logo {
-    margin: 7px;
+  margin: 7px;
 }

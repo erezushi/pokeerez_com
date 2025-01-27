@@ -4,7 +4,7 @@ import { Skeleton } from '@mui/material';
 import React from 'react';
 import useSWR from 'swr';
 
-import './VideoEmbed.css'
+import './VideoEmbed.css';
 
 interface IVideoEmbedProps {
   apiKey: string;
@@ -52,20 +52,21 @@ const fetcher = (type: IVideoEmbedProps['type'], apiKey: string) =>
 const VideoEmbed = (props: IVideoEmbedProps) => {
   const { apiKey, type } = props;
 
-  const { data, error, isLoading } = useSWR(
-    type,
-    (type: IVideoEmbedProps['type']) => fetcher(type, apiKey),
+  const { data, error, isLoading } = useSWR(type, (type: IVideoEmbedProps['type']) =>
+    fetcher(type, apiKey),
   );
 
   if (isLoading)
-    return <Skeleton variant="rectangular" width={type === 'short' ? 270 : 480} height={type === 'short' ? 480 : 270} />;
+    return (
+      <Skeleton
+        variant="rectangular"
+        width={type === 'short' ? 270 : 480}
+        height={type === 'short' ? 480 : 270}
+      />
+    );
   if (error) return <div>Failed to load</div>;
   if (data.error)
-    return (
-      <div className='data-error'>
-        {data.error.message.replace(/<.*?>/g, '')}
-      </div>
-    );
+    return <div className="data-error">{data.error.message.replace(/<.*?>/g, '')}</div>;
 
   return (
     <iframe
