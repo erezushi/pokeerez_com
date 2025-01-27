@@ -11,6 +11,9 @@
 
     --schedule-height: 450px;
     --schedule-width: 800px;
+
+    --twitter-height: 550px;
+    --twitter-width: 100%;
   }
 }
 
@@ -27,6 +30,9 @@
 
     --schedule-height: 450px;
     --schedule-width: 100%;
+
+    --twitter-height: 500px;
+    --twitter-width: 100%;
   }
 }
 
@@ -107,4 +113,9 @@ iframe.schedule-iframe {
   width: var(--schedule-width);
 
   border-width: 0;
+}
+
+iframe.twitter-iframe {
+  height: var(--twitter-height);
+  width: var(--twitter-width);
 }

@@ -52,6 +52,7 @@ const Navbar = () => {
         <Link href="YouTube">YouTube</Link>
         <Link href="Twitch">Twitch</Link>
         <Link href="Schedule">Stream Schedule</Link>
+        <Link href="Twitter">Twitter</Link>
       </div>
     </div>
   );
