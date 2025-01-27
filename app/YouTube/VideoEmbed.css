@@ -1,5 +1,39 @@
+@media screen and (min-width: 466px) {
+  :root {
+    --youtube-width: 480px;
+    --youtube-height: 270px;
+  }
+}
+
+@media screen and (max-width: 465px) {
+  :root {
+    --youtube-width: 320px;
+    --youtube-height: 180px;
+  }
+}
+
 div.data-error {
   font-style: italic;
   font-size: small;
   color: red;
+}
+
+iframe.youtube-embed {
+  height: var(--youtube-height);
+  width: var(--youtube-width);
+}
+
+iframe.youtube-embed.short {
+  height: 480px;
+  width: 270px;
+}
+
+span.youtube-skeleton {
+  height: var(--youtube-height);
+  width: var(--youtube-width);
+}
+
+span.youtube-skeleton.short {
+  height: 480px;
+  width: 270px;
 }

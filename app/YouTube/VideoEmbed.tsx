@@ -59,9 +59,8 @@ const VideoEmbed = (props: IVideoEmbedProps) => {
   if (isLoading)
     return (
       <Skeleton
+        className={`youtube-skeleton ${type}`}
         variant="rectangular"
-        width={type === 'short' ? 270 : 480}
-        height={type === 'short' ? 480 : 270}
       />
     );
   if (error) return <div>Failed to load</div>;
@@ -70,8 +69,7 @@ const VideoEmbed = (props: IVideoEmbedProps) => {
 
   return (
     <iframe
-      width={type === 'short' ? 270 : 480}
-      height={type === 'short' ? 480 : 270}
+      className={`youtube-skeleton ${type}`}
       src={`https://www.youtube.com/embed/${data.items[0].id.videoId}`}
       title="YouTube video player"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
