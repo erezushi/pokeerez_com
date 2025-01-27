@@ -8,6 +8,9 @@
 
     --twitch-height: 360px;
     --twitch-width: 640px;
+
+    --schedule-height: 450px;
+    --schedule-width: 800px;
   }
 }
 
@@ -21,6 +24,9 @@
 
     --twitch-height: 180px;
     --twitch-width: 320px;
+
+    --schedule-height: 450px;
+    --schedule-width: 100%;
   }
 }
 
@@ -55,6 +61,8 @@ div.navbar a {
   text-decoration: none;
 
   margin: 0.5em;
+
+  text-align: center;
 }
 
 div.navbar-container.collapsed .navbar {
@@ -92,4 +100,11 @@ img.site-logo {
 iframe.twitch-iframe {
   height: var(--twitch-height);
   width: var(--twitch-width);
+}
+
+iframe.schedule-iframe {
+  height: var(--schedule-height);
+  width: var(--schedule-width);
+
+  border-width: 0;
 }
