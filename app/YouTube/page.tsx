@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import VideoEmbed from './VideoEmbed';
+import VideoEmbed from '@/ui/VideoEmbed';
 import { Suspense } from 'react';
 import { Skeleton } from '@mui/material';
 

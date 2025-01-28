@@ -4,7 +4,7 @@ import { neon } from '@neondatabase/serverless';
 import './VideoEmbed.css';
 
 interface IVideoEmbedProps {
-  type: 'short' | 'video' | 'live';
+  type: 'short' | 'video' | 'live' | 'ErOr';
 }
 
 const { YOUTUBE_API_KEY, DATABASE_URL } = process.env;
@@ -21,7 +21,7 @@ const baseParams = {
 
 const typeParams: Record<
   string,
-  { videoCaption: 'none' | 'closedCaption'; videoDuration?: 'long' | 'short' }
+  { videoCaption?: 'none' | 'closedCaption'; videoDuration?: 'long' | 'short', channelId?: string }
 > = {
   short: {
     videoCaption: 'none',
@@ -34,6 +34,9 @@ const typeParams: Record<
     videoCaption: 'none',
     videoDuration: 'long',
   },
+  ErOr: {
+    channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ'
+  }
 };
 
 const VideoEmbed = async (props: IVideoEmbedProps) => {
