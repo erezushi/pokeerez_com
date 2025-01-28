@@ -53,6 +53,7 @@ const Navbar = () => {
         <Link href="Twitch">Twitch</Link>
         <Link href="Schedule">Stream Schedule</Link>
         <Link href="Twitter">Twitter</Link>
+        <Link href="Bluesky">Bluesky</Link>
       </div>
     </div>
   );

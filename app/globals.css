@@ -14,6 +14,9 @@
 
     --twitter-height: 550px;
     --twitter-width: 100%;
+
+    --bsky-height: 525px;
+    --bsky-width: 100%;
   }
 }
 
@@ -33,6 +36,9 @@
 
     --twitter-height: 500px;
     --twitter-width: 100%;
+
+    --bsky-height: 450px;
+    --bsky-width: 100%;
   }
 }
 
@@ -118,4 +124,9 @@ iframe.schedule-iframe {
 iframe.twitter-iframe {
   height: var(--twitter-height);
   width: var(--twitter-width);
+}
+
+iframe.bsky-iframe {
+  height: var(--bsky-height);
+  width: var(--bsky-width);
 }
