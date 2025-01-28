@@ -54,6 +54,7 @@ const Navbar = () => {
         <Link href="Schedule">Stream Schedule</Link>
         <Link href="Twitter">Twitter</Link>
         <Link href="Bluesky">Bluesky</Link>
+        <Link href="ErOrBros">ErOr Bros.</Link>
       </div>
     </div>
   );
