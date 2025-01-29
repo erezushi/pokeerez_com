@@ -49,12 +49,24 @@ const Navbar = () => {
             priority
           />
         </Link>
-        <Link href="YouTube">YouTube</Link>
-        <Link href="Twitch">Twitch</Link>
-        <Link href="Schedule">Stream Schedule</Link>
-        <Link href="Twitter">Twitter</Link>
-        <Link href="Bluesky">Bluesky</Link>
-        <Link href="ErOrBros">ErOr Bros.</Link>
+        <Link href="YouTube" className="navbar-link">
+          YouTube
+        </Link>
+        <Link href="Twitch" className="navbar-link">
+          Twitch
+        </Link>
+        <Link href="Schedule" className="navbar-link">
+          Stream Schedule
+        </Link>
+        <Link href="Twitter" className="navbar-link">
+          Twitter
+        </Link>
+        <Link href="Bluesky" className="navbar-link">
+          Bluesky
+        </Link>
+        <Link href="ErOrBros" className="navbar-link">
+          ErOr Bros.
+        </Link>
       </div>
     </div>
   );

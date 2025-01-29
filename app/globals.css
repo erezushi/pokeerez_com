@@ -68,7 +68,7 @@ div.navbar {
   align-items: center;
 }
 
-div.navbar a {
+a.navbar-link {
   color: white;
   text-decoration: none;
 
