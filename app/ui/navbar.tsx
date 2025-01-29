@@ -42,7 +42,7 @@ const Navbar = () => {
         <Link href="/">
           <Image
             className="site-logo"
-            src="/PokéErez Logo.webp"
+            src="/images/PokéErez Logo.webp"
             height={50}
             width={50}
             alt="PokéErez channel logo"
