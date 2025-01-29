@@ -17,6 +17,9 @@
 
     --bsky-height: 525px;
     --bsky-width: 100%;
+
+    --website-image-height: 225px;
+    --website-image-width: 400px;
   }
 }
 
@@ -39,6 +42,9 @@
 
     --bsky-height: 450px;
     --bsky-width: 100%;
+
+    --website-image-height: 180px;
+    --website-image-width: 320px;
   }
 }
 
@@ -75,6 +81,19 @@ a.navbar-link {
   margin: 0.5em;
 
   text-align: center;
+}
+
+a.dropdown-link {
+  color: black;
+  text-decoration: none;
+}
+
+div.navbar label#websites-input-label {
+  color: white;
+}
+
+div.navbar div#websites-select {
+  width: 5em;
 }
 
 div.navbar-container.collapsed .navbar {
@@ -129,4 +148,11 @@ iframe.twitter-iframe {
 iframe.bsky-iframe {
   height: var(--bsky-height);
   width: var(--bsky-width);
+}
+
+img.website-image {
+  height: var(--website-image-height);
+  width: var(--website-image-width);
+
+  margin: 0.5em;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import MenuRounded from '@mui/icons-material/MenuRounded';
-import { Button } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -67,6 +67,16 @@ const Navbar = () => {
         <Link href="ErOrBros" className="navbar-link">
           ErOr Bros.
         </Link>
+        <FormControl>
+          <InputLabel id="websites-input-label">Websites</InputLabel>
+          <Select labelId="websites-input-label" id="websites-select" variant="standard">
+            <MenuItem>
+              <Link href="Randomizer" className="dropdown-link">
+                Random Pokémon Generator
+              </Link>
+            </MenuItem>
+          </Select>
+        </FormControl>
       </div>
     </div>
   );
