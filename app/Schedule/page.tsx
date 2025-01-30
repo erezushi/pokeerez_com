@@ -1,5 +1,6 @@
 import ScheduleFrame from '@/ui/ScheduleFrame';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Schedule',
@@ -13,7 +14,9 @@ const page = () => {
       <br />
       Check here for an up-to-date, time-zone converted schedule:
       <br />
-      <ScheduleFrame />
+      <Suspense fallback={<></>}>
+        <ScheduleFrame />
+      </Suspense>
     </div>
   );
 };
