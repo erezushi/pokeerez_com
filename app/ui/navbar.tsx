@@ -75,6 +75,11 @@ const Navbar = () => {
                 Random Pokémon Generator
               </Link>
             </MenuItem>
+            <MenuItem>
+              <Link href="NameGame" className="dropdown-link">
+                The Name Game
+              </Link>
+            </MenuItem>
           </Select>
         </FormControl>
       </div>
