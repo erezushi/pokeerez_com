@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const metadata: Metadata = {
   title: 'NameGame',
@@ -8,6 +9,8 @@ const metadata: Metadata = {
 const page = () => {
   return (
     <div>
+      <Link href="https://names.pokeerez.com">Check it out here!</Link>
+      <br />
       The Name Game is a simple premise: you get a Pokémon name in a non-English language (that
       still uses the latin alphabet), and you need to guess what Pokémon that name belongs to.
       <br />

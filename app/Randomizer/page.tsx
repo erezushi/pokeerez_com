@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Generator',
@@ -8,6 +9,8 @@ export const metadata: Metadata = {
 const page = () => {
   return (
     <div>
+      <Link href="https://generator.pokeerez.com">Check it out here!</Link>
+      <br />
       Other than this site, I developed is my own version of a random Pokémon generator.
       <br />
       Select various filters, or a custom list of Pokémon, and let the site generate a selection of
