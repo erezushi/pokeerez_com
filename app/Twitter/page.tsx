@@ -13,7 +13,7 @@ const page = () => {
       Explore some of my posts here:
       <br />
       <iframe
-        className='twitter-iframe'
+        className="twitter-iframe"
         src="https://widgets.sociablekit.com/twitter-feed/iframe/25515331"
       ></iframe>
     </div>

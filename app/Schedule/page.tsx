@@ -13,7 +13,7 @@ const page = () => {
       Check here for an up-to-date, time-zone converted schedule:
       <br />
       <iframe
-        className='schedule-iframe'
+        className="schedule-iframe"
         src={`https://calendar.google.com/calendar/embed?wkst=1&ctz=${
           Intl.DateTimeFormat().resolvedOptions().timeZone
         }&showPrint=0&mode=WEEK&showCalendars=0&showTitle=0&color=%238E24AA&hl=${

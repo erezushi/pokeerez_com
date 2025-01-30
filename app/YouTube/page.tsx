@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   title: 'YouTube',
 };
 
-
 const page = () => {
   return (
     <>
@@ -21,7 +20,7 @@ const page = () => {
       <br />
       My latest uploaded video:
       <br />
-      <Suspense fallback={<Skeleton variant='rectangular' className='youtube-skeleton video' />}>
+      <Suspense fallback={<Skeleton variant="rectangular" className="youtube-skeleton video" />}>
         <VideoEmbed type="video" />
       </Suspense>
       <br />
@@ -31,7 +30,7 @@ const page = () => {
       <br />
       My latest live-stream:
       <br />
-      <Suspense fallback={<Skeleton variant='rectangular' className='youtube-skeleton live' />}>
+      <Suspense fallback={<Skeleton variant="rectangular" className="youtube-skeleton live" />}>
         <VideoEmbed type="live" />
       </Suspense>
       <br />
@@ -40,7 +39,7 @@ const page = () => {
       <br />
       My latest short:
       <br />
-      <Suspense fallback={<Skeleton variant='rectangular' className='youtube-skeleton short' />}>
+      <Suspense fallback={<Skeleton variant="rectangular" className="youtube-skeleton short" />}>
         <VideoEmbed type="short" />
       </Suspense>
     </>

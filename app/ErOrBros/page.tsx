@@ -13,8 +13,8 @@ const page = () => {
   return (
     <div>
       Together with my brother, I run another YouTube channel called ErOr Bros., where we upload and
-      stream whatever games we want. I stream on this channel on the off-Sundays that I don't stream
-      on PokéErez.
+      stream whatever games we want. I stream on this channel on the off-Sundays that I don&apos;t
+      stream on PokéErez.
       <br />
       This channel lacks a Twitch counterpart, but does have its own{' '}
       <Link href="https://twitter.com/ErOrBros">Twitter</Link> and{' '}

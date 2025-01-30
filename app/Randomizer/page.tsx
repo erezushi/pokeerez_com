@@ -31,8 +31,8 @@ const page = () => {
         height={225}
       />
       <br />
-      After getting the Pokémon selection, you can check each specie's page in popular Pokémon info
-      sites, or click the Pokémon to display basic info about it.
+      After getting the Pokémon selection, you can check each specie&apos;s page in popular Pokémon
+      info sites, or click the Pokémon to display basic info about it.
       <Image
         src="/images/Randomizer Generated List.webp"
         alt="A screenshot of the randomizer website showing a generated list of random Pokémon"
@@ -48,8 +48,8 @@ const page = () => {
         height={225}
       />
       <br />
-      Lastly, by hitting "Export to 'Showdown!'", you can select up to six Pokémon, customize them,
-      and export them as a team to Pokémon Showdown! or PokéPaste.
+      Lastly, by hitting &quot;Export to &apos;Showdown!&apos;&quot;, you can select up to six
+      Pokémon, customize them, and export them as a team to Pokémon Showdown! or PokéPaste.
       <Image
         src="/images/Randomizer Export - Empty.webp"
         alt="A screenshot of the randomizer website's Showdown! export page as it appears right after clicking the export button"
