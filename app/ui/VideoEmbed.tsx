@@ -21,7 +21,7 @@ const baseParams = {
 
 const typeParams: Record<
   string,
-  { videoCaption?: 'none' | 'closedCaption'; videoDuration?: 'long' | 'short', channelId?: string }
+  { videoCaption?: 'none' | 'closedCaption'; videoDuration?: 'long' | 'short'; channelId?: string }
 > = {
   short: {
     videoCaption: 'none',
@@ -35,8 +35,8 @@ const typeParams: Record<
     videoDuration: 'long',
   },
   ErOr: {
-    channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ'
-  }
+    channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ',
+  },
 };
 
 const VideoEmbed = async (props: IVideoEmbedProps) => {
@@ -63,10 +63,10 @@ const VideoEmbed = async (props: IVideoEmbedProps) => {
         type: IVideoEmbedProps['type'];
         id: string;
       };
-  
+
       videoId = idRow.id;
     } catch (error) {
-      return <div className="data-error">Failed to retrieve video data</div>
+      return <div className="data-error">Failed to retrieve video data</div>;
     }
   } else {
     videoId = youtubeData.items[0].id.videoId;

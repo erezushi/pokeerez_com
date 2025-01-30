@@ -9,6 +9,7 @@ The API is available on https://pokeerez.com/api/game
 All requests to the API must include the query parameters `action` _(what you want to do)_ and `user` _(YouTube/Twitch username of the sender)_. Some actions also require a `payload` parameter.
 
 **Table of Contents**
+
 - [Setting Up the Game](#setting-up-the-game)
 - [Playing the Game](#playing-the-game)
 - [Action Summary](#action-summary)
@@ -112,6 +113,7 @@ $(customapi https://pokeerez.com/api/game?action=$(index1 null)&payload=$(index2
 Alongside the game responses, which chatbots receive, there is also a service for displaying the state of a game in a way that can be put into various streaming softwares.
 
 To use it, add a Browser Source to your scene _(or whatever the equivalents of them are in your streaming software)_, and set it to
+
 ```
 https://announcer.pokeerez.com/?key=[game key]
 ```

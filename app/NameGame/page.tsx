@@ -22,8 +22,9 @@ const page = () => {
         height={225}
       />
       <br />
-      As you submit guesses, the game will offer hints to help you along: The name's language after
-      1 guess, the Pokémon's generation after 3 guesses, and the Pokémon's typing after 6 guesses.
+      As you submit guesses, the game will offer hints to help you along: The name&apos;s language
+      after 1 guess, the Pokémon&apos;s generation after 3 guesses, and the Pokémon&apos;s typing
+      after 6 guesses.
       <br />
       <Image
         src="/images/NameGame 1 Hint.webp"
@@ -56,9 +57,9 @@ const page = () => {
       />
       <br />
       After guessing the correct Pokémon, the game will display it big and proud, and let you read
-      up on the Pokémon's name origins on its Bulbapedia page.
+      up on the Pokémon&apos;s name origins on its Bulbapedia page.
       <br />
-      Hitting 'Play again!' will reset the game and give you a new name to guess.
+      Hitting &apos;Play again!&apos; will reset the game and give you a new name to guess.
       <br />
       <Image
         src="/images/NameGame Win.webp"
