@@ -4,6 +4,8 @@ export const metadata: Metadata = {
   title: 'Twitch',
 };
 
+const { TWITCH_URL } = process.env;
+
 const page = () => {
   return (
     <div>
@@ -14,7 +16,7 @@ const page = () => {
       <br />
       <iframe
         className="twitch-iframe"
-        src="https://player.twitch.tv/?channel=pokeerez&parent=localhost"
+        src={`https://player.twitch.tv/?channel=pokeerez&parent=${TWITCH_URL}`}
         allowFullScreen
       ></iframe>
     </div>
