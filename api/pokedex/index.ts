@@ -50,7 +50,7 @@ const pokedexApi = async (request: VercelRequest, response: VercelResponse) => {
       } = apiPokemonSpecies.data;
 
       const EvolutionRequestStartTime = Date.now();
-      const evolutionLine = (await axios.get(evolutionChain.url)) as EvolutionChain;
+      const evolutionLine = (await axios.get<EvolutionChain>(evolutionChain.url)).data;
 
       console.log(
         `Evolution chain request returned after ${Date.now() - EvolutionRequestStartTime} ms`,
