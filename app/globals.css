@@ -1,3 +1,4 @@
+/* Wide screen (PCs) */
 @media screen and (min-width: 466px) {
   :root {
     --navbar-width: 100vw;
@@ -18,11 +19,15 @@
     --bsky-height: 525px;
     --bsky-width: 100%;
 
+    --collection-height: 550px;
+    --collection-width: 100%;
+
     --website-image-height: 225px;
     --website-image-width: 400px;
   }
 }
 
+/* Narrow screen (phones) */
 @media screen and (max-width: 465px) {
   :root {
     --navbar-width: 7em;
@@ -37,11 +42,14 @@
     --schedule-height: 450px;
     --schedule-width: 100%;
 
-    --twitter-height: 500px;
+    --twitter-height: 525px;
     --twitter-width: 100%;
 
-    --bsky-height: 450px;
+    --bsky-height: 475px;
     --bsky-width: 100%;
+
+    --collection-height: 550px;
+    --collection-width: 100%;
 
     --website-image-height: 180px;
     --website-image-width: 320px;
@@ -148,6 +156,11 @@ iframe.twitter-iframe {
 iframe.bsky-iframe {
   height: var(--bsky-height);
   width: var(--bsky-width);
+}
+
+iframe.collection-iframe {
+  height: var(--collection-height);
+  width: var(--collection-width);
 }
 
 img.website-image {
