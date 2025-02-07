@@ -19,6 +19,9 @@
     --bsky-height: 525px;
     --bsky-width: 100%;
 
+    --collection-height: 550px;
+    --collection-width: 100%;
+
     --website-image-height: 225px;
     --website-image-width: 400px;
   }
@@ -44,6 +47,9 @@
 
     --bsky-height: 475px;
     --bsky-width: 100%;
+
+    --collection-height: 550px;
+    --collection-width: 100%;
 
     --website-image-height: 180px;
     --website-image-width: 320px;
@@ -150,6 +156,11 @@ iframe.twitter-iframe {
 iframe.bsky-iframe {
   height: var(--bsky-height);
   width: var(--bsky-width);
+}
+
+iframe.collection-iframe {
+  height: var(--collection-height);
+  width: var(--collection-width);
 }
 
 img.website-image {

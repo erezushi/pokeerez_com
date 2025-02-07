@@ -64,6 +64,9 @@ const Navbar = () => {
         <Link href="Bluesky" className="navbar-link">
           Bluesky
         </Link>
+        <Link href="Collection" className="navbar-link">
+          Shiny Collection
+        </Link>
         <Link href="ErOrBros" className="navbar-link">
           ErOr Bros.
         </Link>
