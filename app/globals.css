@@ -1,3 +1,4 @@
+/* Wide screen (PCs) */
 @media screen and (min-width: 466px) {
   :root {
     --navbar-width: 100vw;
@@ -23,6 +24,7 @@
   }
 }
 
+/* Narrow screen (phones) */
 @media screen and (max-width: 465px) {
   :root {
     --navbar-width: 7em;
@@ -37,10 +39,10 @@
     --schedule-height: 450px;
     --schedule-width: 100%;
 
-    --twitter-height: 500px;
+    --twitter-height: 525px;
     --twitter-width: 100%;
 
-    --bsky-height: 450px;
+    --bsky-height: 475px;
     --bsky-width: 100%;
 
     --website-image-height: 180px;
