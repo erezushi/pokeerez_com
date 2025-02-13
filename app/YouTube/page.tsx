@@ -3,9 +3,7 @@ import VideoEmbed from '@/ui/VideoEmbed';
 import { Suspense } from 'react';
 import { Skeleton } from '@mui/material';
 
-export const metadata: Metadata = {
-  title: 'YouTube',
-};
+export const metadata: Metadata = { title: 'YouTube' };
 
 const page = () => {
   return (

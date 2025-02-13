@@ -5,9 +5,7 @@ import { Skeleton } from '@mui/material';
 
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'ErOr Bros.',
-};
+export const metadata: Metadata = { title: 'ErOr Bros.' };
 
 const page = () => {
   return (

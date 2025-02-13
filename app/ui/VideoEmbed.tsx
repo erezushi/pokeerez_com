@@ -23,31 +23,17 @@ const typeParams: Record<
   string,
   { videoCaption?: 'none' | 'closedCaption'; videoDuration?: 'long' | 'short'; channelId?: string }
 > = {
-  short: {
-    videoCaption: 'none',
-    videoDuration: 'short',
-  },
-  video: {
-    videoCaption: 'closedCaption',
-  },
-  live: {
-    videoCaption: 'none',
-    videoDuration: 'long',
-  },
-  ErOr: {
-    channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ',
-  },
+  short: { videoCaption: 'none', videoDuration: 'short' },
+  video: { videoCaption: 'closedCaption' },
+  live: { videoCaption: 'none', videoDuration: 'long' },
+  ErOr: { channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ' },
 };
 
 const VideoEmbed = async (props: IVideoEmbedProps) => {
   const { type } = props;
 
   const youtubeRes = await fetch(
-    `${baseUrl}?${Object.entries({
-      key: YOUTUBE_API_KEY,
-      ...baseParams,
-      ...typeParams[type],
-    })
+    `${baseUrl}?${Object.entries({ key: YOUTUBE_API_KEY, ...baseParams, ...typeParams[type] })
       .map(([key, value]) => `${key}=${value}`)
       .join('&')}`,
   );
@@ -71,7 +57,7 @@ const VideoEmbed = async (props: IVideoEmbedProps) => {
   } else {
     videoId = youtubeData.items[0].id.videoId;
 
-    await sql(`UPDATE "VideoIDs" SET id = '${videoId}' WHERE type = '${type}'`);
+    await sql(`UPDATE "VideoIDs" SET id='${videoId}' WHERE type='${type}'`);
   }
 
   return (
