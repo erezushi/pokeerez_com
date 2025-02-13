@@ -2,9 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const metadata: Metadata = {
-  title: 'NameGame',
-};
+const metadata: Metadata = { title: 'NameGame' };
 
 const page = () => {
   return (

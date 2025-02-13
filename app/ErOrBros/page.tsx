@@ -1,13 +1,11 @@
 import Link from 'next/link';
 import VideoEmbed from '@/ui/VideoEmbed';
-import { Suspense } from 'react';
-import { Skeleton } from '@mui/material';
 
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'ErOr Bros.',
-};
+export const metadata: Metadata = { title: 'ErOr Bros.' };
+
+export const revalidate = 0;
 
 const page = () => {
   return (
@@ -23,9 +21,7 @@ const page = () => {
       <br />
       Check out our latest video/stream:
       <br />
-      <Suspense fallback={<Skeleton variant="rectangular" className="youtube-skeleton video" />}>
-        <VideoEmbed type="ErOr" />
-      </Suspense>
+      <VideoEmbed type="ErOr" />
     </div>
   );
 };

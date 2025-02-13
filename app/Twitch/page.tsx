@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Twitch',
-};
+export const metadata: Metadata = { title: 'Twitch' };
 
 const { TWITCH_URL } = process.env;
 

@@ -1,8 +1,6 @@
 import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Shiny Collection',
-};
+export const metadata: Metadata = { title: 'Shiny Collection' };
 
 const page = () => {
   return (

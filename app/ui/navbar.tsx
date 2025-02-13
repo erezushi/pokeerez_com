@@ -27,12 +27,7 @@ const Navbar = () => {
   }, [mediaQuery.matches]);
 
   return (
-    <div
-      className={clsx({
-        'navbar-container': true,
-        collapsed: isMenuCollapsed,
-      })}
-    >
+    <div className={clsx({ 'navbar-container': true, collapsed: isMenuCollapsed })}>
       {mediaQuery.matches && (
         <Button onClick={toggleMenuCollapse} className="navbar-collapse-button">
           <MenuRounded htmlColor={isMenuCollapsed ? 'black' : 'white'} />

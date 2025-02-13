@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Twitter',
-};
+export const metadata: Metadata = { title: 'Twitter' };
 
 const page = () => {
   return (
