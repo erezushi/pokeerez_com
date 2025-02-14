@@ -136,6 +136,10 @@ img.site-logo {
   margin: 7px;
 }
 
+span.video-footnote {
+  font-size: small;
+}
+
 iframe.twitch-iframe {
   height: var(--twitch-height);
   width: var(--twitch-width);

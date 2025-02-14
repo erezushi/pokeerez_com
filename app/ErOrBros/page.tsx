@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'ErOr Bros.' };
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 const page = () => {
   return (
@@ -19,9 +19,12 @@ const page = () => {
       <Link href="https://ErOrBros.bsky.social">Bluesky</Link> accounts for channel updates due to
       being a co-owned channel.
       <br />
-      Check out our latest video/stream:
+      Check out our latest video/stream*:
       <br />
       <VideoEmbed type="ErOr" />
+      <br />
+      <br />
+      <span className="video-footnote">*may take up to an hour to update</span>
     </div>
   );
 };
