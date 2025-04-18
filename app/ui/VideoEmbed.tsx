@@ -46,7 +46,7 @@ const VideoEmbed = async (props: IVideoEmbedProps) => {
 
   if (youtubeData.error) {
     try {
-      const idRow = (await sql(`SELECT * FROM "VideoIDs" WHERE type='${type}'`))[0] as {
+      const idRow = (await sql`SELECT * FROM "VideoIDs" WHERE type = ${type}'`)[0] as {
         type: IVideoEmbedProps['type'];
         id: string;
       };
@@ -58,7 +58,7 @@ const VideoEmbed = async (props: IVideoEmbedProps) => {
   } else {
     videoId = youtubeData.items[0].id.videoId;
 
-    await sql(`UPDATE "VideoIDs" SET id='${videoId}' WHERE type='${type}'`);
+    await sql`UPDATE "VideoIDs" SET id = ${videoId} WHERE type = ${type}`;
   }
 
   return (
