@@ -57,7 +57,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
   if (!key || key === 'null' || _.isArray(key)) {
     if (action === 'key') {
       const existingManager = (
-        await sql(`SELECT * FROM "Managers" WHERE manager='${user}'`)
+        await sql`SELECT * FROM "Managers" WHERE manager='${user}'`
       )[0] as Manager;
 
       if (existingManager) {
@@ -70,8 +70,8 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
 
       const newKey = nanoid();
 
-      await sql(`INSERT INTO "Managers" ("key", "manager")
-        VALUES ('${newKey}', '${user}')`);
+      await sql`INSERT INTO "Managers" ("key", "manager")
+        VALUES ('${newKey}', '${user}')`;
 
       response.send(
         `${user} registered as a game manager. Game key is ${newKey}\nKeep it somewhere safe, it will not be shown to you again.`,
@@ -85,7 +85,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
     return;
   }
 
-  const managerRecord = (await sql(`SELECT * FROM "Managers" WHERE key='${key}'`))[0] as Manager;
+  const managerRecord = (await sql`SELECT * FROM "Managers" WHERE key = ${key}`)[0] as Manager;
 
   if (!managerRecord) {
     response.send(
@@ -95,7 +95,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
     return;
   }
 
-  const choice = (await sql(`SELECT * FROM "Choice" WHERE key='${key}'`))[0] as Choice;
+  const choice = (await sql`SELECT * FROM "Choice" WHERE key = ${key}`)[0] as Choice;
 
   if (!action || action === 'null' || _.isArray(action)) {
     if (choice) {
@@ -139,8 +139,8 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
 
         const pokemon = randomPokemon({ generations: [filter], amount: 1 })[0];
 
-        await sql(`INSERT INTO "Choice" ("key", "pokemonName", "guesses")
-          VALUES ('${key}', '${pokemon.name}', ARRAY[]::text[])`);
+        await sql`INSERT INTO "Choice" ("key", "pokemonName", "guesses")
+          VALUES (${key}, ${pokemon.name}, ARRAY[]::text[])`;
 
         await redis.set(key, {
           action,
@@ -165,8 +165,8 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
       if (Object.keys(types).includes(filter.toLowerCase())) {
         const pokemon = randomPokemon({ type: filter, amount: 1 })[0];
 
-        await sql(`INSERT INTO "Choice" ("key", "pokemonName", "guesses")
-          VALUES ('${key}', '${pokemon.name}', ARRAY[]::text[])`);
+        await sql`INSERT INTO "Choice" ("key", "pokemonName", "guesses")
+          VALUES (${key}, ${pokemon.name}, ARRAY[]::text[])`;
 
         const generatedGen = Object.entries(generations).find(
           ([num, genObject]) => pokemon.dexNo >= genObject.first && pokemon.dexNo <= genObject.last,
@@ -212,17 +212,19 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
 
       if (formattedGuess === answerFormat(choice.pokemonName)) {
         const scoreRow = (
-          await sql(`SELECT * FROM "Scores" WHERE id='${user}' AND key='${key}'`)
+          await sql`SELECT * FROM "Scores" WHERE id = ${user} AND key = ${key}`
         )[0] as Score;
 
         const newScore = (scoreRow?.score ?? 0) + 1;
 
-        await sql(`INSERT INTO "Scores" ("key-id", key, id, score)
-          VALUES ('${key}-${user}', '${key}', '${user}', ${newScore})
-          ON CONFLICT ("key-id")
-          DO UPDATE SET score = ${newScore}`);
+        const keyId = `${key}-${user}`;
 
-        await sql(`DELETE FROM "Choice" WHERE key='${key}'`);
+        await sql`INSERT INTO "Scores" ("key-id", key, id, score)
+          VALUES (${keyId}, ${key}, ${user}, ${newScore})
+          ON CONFLICT ("key-id")
+          DO UPDATE SET score = ${newScore}`;
+
+        await sql`DELETE FROM "Choice" WHERE key = ${key}`;
 
         await redis.set(key, {
           action,
@@ -253,9 +255,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
       if (
         Object.values(pokemonList).some((pokemon) => answerFormat(pokemon.name) === formattedGuess)
       ) {
-        await sql(
-          `UPDATE "Choice" SET guesses = array_append(guesses, '${formattedGuess}') WHERE key='${key}'`,
-        );
+        await sql`UPDATE "Choice" SET guesses = array_append(guesses, ${formattedGuess}) WHERE key = ${key}`;
 
         await redis.set(key, {
           action,
@@ -304,9 +304,8 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
       break;
 
     case 'leaderboard':
-      const topScores = (await sql(
-        `SELECT * FROM "Scores" WHERE key='${key}' ORDER BY score DESC LIMIT 5`,
-      )) as Score[];
+      const topScores =
+        (await sql`SELECT * FROM "Scores" WHERE key = ${key} ORDER BY score DESC LIMIT 5`) as Score[];
 
       response.send(
         `Top guessers: \n${topScores
@@ -327,13 +326,13 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
         return;
       }
 
-      await sql(`DELETE FROM "Choice" WHERE key='${key}'`);
+      await sql`DELETE FROM "Choice" WHERE key = ${key}`;
       let responseText = `Reset ${user}'s game`;
 
       const { payload: deleteUserScore } = request.query;
 
       if (deleteUserScore === 'true') {
-        await sql(`DELETE FROM "Scores" WHERE id='${user}' AND key='${key}'`);
+        await sql`DELETE FROM "Scores" WHERE id = ${user} AND key = ${key}`;
         responseText += ` and deleted their score from it`;
       }
 
