@@ -22,11 +22,11 @@ const baseParams = {
 
 const typeParams: Record<
   string,
-  { videoCaption?: 'none' | 'closedCaption'; videoDuration?: 'long' | 'short'; channelId?: string }
+  { videoDuration?: 'long' | 'short'; q?: string; channelId?: string }
 > = {
-  short: { videoCaption: 'none', videoDuration: 'short' },
-  video: { videoCaption: 'closedCaption' },
-  live: { videoCaption: 'none', videoDuration: 'long' },
+  short: { videoDuration: 'short', q: 'shorts' },
+  video: { q: '-stream -shorts' },
+  live: { videoDuration: 'long', q: 'stream' },
   ErOr: { channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ' },
 };
 

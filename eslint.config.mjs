@@ -15,7 +15,7 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
-export default [
+const config = [
   ...compat.extends('next/core-web-vitals', 'plugin:prettier/recommended'),
 
   {
@@ -35,3 +35,4 @@ export default [
   },
 ];
 
+export default config;
