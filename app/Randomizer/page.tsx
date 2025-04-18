@@ -9,7 +9,7 @@ const page = () => {
     <div>
       <Link href="https://generator.pokeerez.com">Check it out here!</Link>
       <br />
-      Other than this site, I developed is my own version of a random Pokémon generator.
+      Other than this site, I developed my own version of a random Pokémon generator.
       <br />
       Select various filters, or a custom list of Pokémon, and let the site generate a selection of
       species out of it.
