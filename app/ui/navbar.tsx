@@ -5,7 +5,7 @@ import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const Navbar = () => {
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(true);
@@ -14,25 +14,11 @@ const Navbar = () => {
     setIsMenuCollapsed((oldValue) => !oldValue);
   }, []);
 
-  let mediaQuery: MediaQueryList | { matches: boolean };
-
-  try {
-    mediaQuery = window.matchMedia('(max-width: 465px)');
-  } catch (error) {
-    mediaQuery = { matches: false };
-  }
-
-  useEffect(() => {
-    setIsMenuCollapsed(mediaQuery.matches);
-  }, [mediaQuery.matches]);
-
   return (
     <div className={clsx({ 'navbar-container': true, collapsed: isMenuCollapsed })}>
-      {mediaQuery.matches && (
-        <Button onClick={toggleMenuCollapse} className="navbar-collapse-button">
-          <MenuRounded htmlColor={isMenuCollapsed ? 'black' : 'white'} />
-        </Button>
-      )}
+      <Button onClick={toggleMenuCollapse} className="navbar-collapse-button">
+        <MenuRounded htmlColor={isMenuCollapsed ? 'black' : 'white'} />
+      </Button>
       <div className="navbar">
         <Link href="/">
           <Image

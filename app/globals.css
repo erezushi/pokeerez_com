@@ -1,5 +1,5 @@
 /* Wide screen (PCs) */
-@media screen and (min-width: 466px) {
+@media screen and (min-width: 780px) {
   :root {
     --navbar-width: 100vw;
     --navbar-height: 4em;
@@ -25,10 +25,14 @@
     --website-image-height: 225px;
     --website-image-width: 400px;
   }
+
+  button.navbar-collapse-button {
+    display: none;
+  }
 }
 
 /* Narrow screen (phones) */
-@media screen and (max-width: 465px) {
+@media screen and (max-width: 779px) {
   :root {
     --navbar-width: 7em;
     --navbar-height: 100vh;
@@ -54,6 +58,14 @@
     --website-image-height: 180px;
     --website-image-width: 320px;
   }
+
+  div.navbar-container.collapsed .navbar {
+    display: none;
+  }
+
+  div.navbar-container.collapsed {
+    width: 0;
+  }
 }
 
 div.navbar-container {
@@ -70,10 +82,6 @@ div.navbar-container {
   left: 0;
 
   transition: width 0.5s;
-}
-
-div.navbar-container.collapsed {
-  width: 0;
 }
 
 div.navbar {
@@ -102,10 +110,6 @@ div.navbar label#websites-input-label {
 
 div.navbar div#websites-select {
   width: 5em;
-}
-
-div.navbar-container.collapsed .navbar {
-  display: none;
 }
 
 button.navbar-collapse-button {
