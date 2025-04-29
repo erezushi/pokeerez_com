@@ -25,7 +25,7 @@ const typeParams: Record<
   { videoDuration?: 'long' | 'short'; q?: string; channelId?: string }
 > = {
   short: { videoDuration: 'short', q: 'shorts' },
-  video: { q: '-stream -shorts' },
+  video: { q: '-"chat rules" -shorts' },
   live: { videoDuration: 'long', q: 'stream' },
   ErOr: { channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ' },
 };
