@@ -22,11 +22,11 @@ const baseParams = {
 
 const typeParams: Record<
   string,
-  { videoDuration?: 'long' | 'short'; q?: string; channelId?: string }
+  Partial<{ videoDuration: 'long' | 'short'; q: string; channelId: string; eventType: string }>
 > = {
   short: { videoDuration: 'short', q: 'shorts' },
   video: { q: '-"chat rules" -shorts' },
-  live: { videoDuration: 'long', q: 'stream' },
+  live: { videoDuration: 'long', q: 'stream', eventType: 'completed' },
   ErOr: { channelId: 'UCnZM8KNPHLxuqfOL8z1XybQ' },
 };
 
