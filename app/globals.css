@@ -7,8 +7,13 @@
 
     --main-page-margin: 4.5em;
 
-    --twitch-height: 360px;
-    --twitch-width: 640px;
+    --twitch-flex-direction: row;
+
+    --twitch-height: 495px;
+    --twitch-width: 880px;
+
+    --twitch-chat-height: 495px;
+    --twitch-chat-width: 250px;
 
     --schedule-height: 450px;
     --schedule-width: 800px;
@@ -40,8 +45,13 @@
 
     --main-page-margin: 3em;
 
+    --twitch-flex-direction: column;
+
     --twitch-height: 180px;
     --twitch-width: 320px;
+
+    --twitch-chat-height: 300px;
+    --twitch-chat-width: 320px;
 
     --schedule-height: 450px;
     --schedule-width: 100%;
@@ -144,9 +154,23 @@ span.video-footnote {
   font-size: small;
 }
 
+div.twitch-box {
+  display: flex;
+  flex-direction: var(--twitch-flex-direction)
+}
+
 iframe.twitch-iframe {
   height: var(--twitch-height);
   width: var(--twitch-width);
+
+  margin: 1em 1em 0 0
+}
+
+iframe.twitch-chat-iframe {
+  height: var(--twitch-chat-height);
+  width: var(--twitch-chat-width);
+
+  margin-top: 1em
 }
 
 iframe.schedule-iframe {
