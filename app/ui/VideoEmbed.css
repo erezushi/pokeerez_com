@@ -21,6 +21,8 @@ div.data-error {
 iframe.youtube-embed {
   height: var(--youtube-height);
   width: var(--youtube-width);
+
+  margin-top: 0.5em;
 }
 
 iframe.youtube-embed.short {
