@@ -22,7 +22,7 @@
     "lodash": "^4.17.21",
     "next": "^15.5.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react-dom": "^19.2.0",
     "romans": "^3.1.0"
   },
   "devDependencies": {
@@ -31,7 +31,7 @@
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
+    "@types/react-dom": "^19.2.0",
     "@vercel/node": "^5.3.6",
     "eslint": "^9.37.0",
     "eslint-config-next": "^15.5.0",
