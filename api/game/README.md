@@ -1,6 +1,6 @@
 # Pokémon Guess Who
 
-### Stream chatbot game by [PokéErez](https://linktr.ee/erezushi)
+### Stream chatbot game by [PokéErez](https://PokeErez.com)
 
 An API endpoint for playing a game of Guess Who, using query parameters, and text responses for chatbot support.
 

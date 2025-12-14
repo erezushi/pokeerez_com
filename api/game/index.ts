@@ -78,7 +78,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
       );
     } else {
       response.send(
-        'Missing game key. Need to make one? head over to https://github.com/erezushi/PokeErez.com-Placeholder/tree/main/api/game and follow the instructions',
+        'Missing game key. Need to make one? head over to https://github.com/erezushi/pokeerez_com/tree/master/api/game and follow the instructions',
       );
     }
 
@@ -89,7 +89,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
 
   if (!managerRecord) {
     response.send(
-      'Game key not recognized. Need to make one? head over to https://github.com/erezushi/PokeErez.com-Placeholder/tree/main/api/game and follow the instructions',
+      'Game key not recognized. Need to make one? head over to https://github.com/erezushi/pokeerez_com/tree/master/api/game and follow the instructions',
     );
 
     return;
