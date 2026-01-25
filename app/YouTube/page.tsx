@@ -36,7 +36,7 @@ const page = () => {
       <VideoEmbed type="short" />
       <br />
       <br />
-      <span className="video-footnote">*may take up to an hour to update</span>
+      <span className="footnote">*may take up to an hour to update</span>
     </>
   );
 };
