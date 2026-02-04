@@ -4,8 +4,8 @@ import randomPokemon, { getGenerations, getPokemon, getTypes } from '@erezushi/p
 import { neon } from '@neondatabase/serverless';
 import { PokemonSpecies } from 'pokedex-promise-v2';
 import { romanize } from 'romans';
-import { VercelRequest, VercelResponse } from '@vercel/node';
 import { Redis } from '@upstash/redis';
+import { NextRequest } from 'next/server';
 
 type Choice = {
   key: string;
@@ -49,10 +49,12 @@ const answerFormat = (name: string) => {
   return nameCopy;
 };
 
-const gameApi = async (request: VercelRequest, response: VercelResponse) => {
-  response.setHeader('Content-Type', 'text/plain');
+export const GET = async (request: NextRequest) => {
+  const { searchParams } = request.nextUrl;
 
-  const { action, user, key } = request.query;
+  const action = searchParams.get('action');
+  const user = searchParams.get('user');
+  const key = searchParams.get('key');
 
   if (!key || key === 'null' || _.isArray(key)) {
     if (action === 'key') {
@@ -61,9 +63,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
       )[0] as Manager;
 
       if (existingManager) {
-        response.send('Username already registered');
-
-        return;
+        return new Response('Username already registered');
       }
 
       const { nanoid } = await import('nanoid');
@@ -73,68 +73,54 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
       await sql`INSERT INTO "Managers" ("key", "manager")
         VALUES ('${newKey}', '${user}')`;
 
-      response.send(
+      return new Response(
         `${user} registered as a game manager. Game key is ${newKey}\nKeep it somewhere safe, it will not be shown to you again.`,
       );
     } else {
-      response.send(
+      return new Response(
         'Missing game key. Need to make one? head over to https://github.com/erezushi/pokeerez_com/tree/master/api/game and follow the instructions',
       );
     }
-
-    return;
   }
 
   const managerRecord = (await sql`SELECT * FROM "Managers" WHERE key = ${key}`)[0] as Manager;
 
   if (!managerRecord) {
-    response.send(
+    return new Response(
       'Game key not recognized. Need to make one? head over to https://github.com/erezushi/pokeerez_com/tree/master/api/game and follow the instructions',
     );
-
-    return;
   }
 
   const choice = (await sql`SELECT * FROM "Choice" WHERE key = ${key}`)[0] as Choice;
 
   if (!action || action === 'null' || _.isArray(action)) {
     if (choice) {
-      response.send("Game is running, try '!guesswho guess [Pokémon]'");
+      return new Response("Game is running, try '!guesswho guess [Pokémon]'");
     } else {
-      response.send("No game is running, try '!guesswho start [Gen/type]'");
+      return new Response("No game is running, try '!guesswho start [Gen/type]'");
     }
-
-    return;
   }
 
   if (!user || user === 'null' || _.isArray(user)) {
-    response.send('Missing user parameter');
-
-    return;
+    return new Response('Missing user parameter');
   }
 
   switch (action) {
     case 'start':
       if (choice) {
-        response.send("Game is already running, try '!guesswho guess [Pokémon]'");
-
-        return;
+        return new Response("Game is already running, try '!guesswho guess [Pokémon]'");
       }
 
-      const { payload: filter } = request.query;
+      const filter = searchParams.get('payload');
       if (!filter || filter === 'null' || _.isArray(filter)) {
-        response.send('Please choose either a generation or a type of Pokémon to play.');
-
-        return;
+        return new Response('Please choose either a generation or a type of Pokémon to play.');
       }
 
       const generations = getGenerations();
 
       if (_.isFinite(Number(filter))) {
         if (!Object.keys(generations).includes(filter)) {
-          response.send("Number given isn't an existing generation");
-
-          return;
+          return new Response("Number given isn't an existing generation");
         }
 
         const pokemon = randomPokemon({ generations: [filter], amount: 1 })[0];
@@ -151,13 +137,11 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
           user,
         });
 
-        response.send(
+        return new Response(
           `Pokémon chosen, Typing: ${_.startCase(pokemon.type)
             .split(' ')
             .join('/')}. use '!guesswho guess [Pokémon]' to place your guesses!`,
         );
-
-        return;
       }
 
       const types = getTypes();
@@ -169,7 +153,7 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
           VALUES (${key}, ${pokemon.name}, ARRAY[]::text[])`;
 
         const generatedGen = Object.entries(generations).find(
-          ([num, genObject]) => pokemon.dexNo >= genObject.first && pokemon.dexNo <= genObject.last,
+          ([_, genObject]) => pokemon.dexNo >= genObject.first && pokemon.dexNo <= genObject.last,
         )![0];
 
         await redis.set(key, {
@@ -181,31 +165,23 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
           user,
         });
 
-        response.send(
+        return new Response(
           `Pokémon chosen, Gen ${romanize(
             Number(generatedGen),
           )}. use '!guesswho guess [Pokémon]' to place your guesses!`,
         );
-
-        return;
       }
 
-      response.send('Filter not a type or a generation number');
-
-      break;
+      return new Response('Filter not a type or a generation number');
 
     case 'guess':
       if (!choice) {
-        response.send("Game is not running, try '!guesswho start [Gen/type]'");
-
-        return;
+        return new Response("Game is not running, try '!guesswho start [Gen/type]'");
       }
-      const { payload: guess } = request.query;
+      const guess = searchParams.get('payload');
 
       if (!guess || guess === 'null' || _.isArray(guess)) {
-        response.send("You're guessing nothing? A bit pointless, no?");
-
-        return;
+        return new Response("You're guessing nothing? A bit pointless, no?");
       }
 
       const formattedGuess = answerFormat(guess);
@@ -235,19 +211,17 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
           user,
         });
 
-        response.send(
+        return new Response(
           `That's right! The Pokémon was ${
             choice.pokemonName
-          }! ${user} has guessed correctly ${newScore} time${newScore === 1 ? '' : 's'}`,
+          }! ${user} has guessed correctly ${newScore} time${
+            newScore === 1 ? '' : 's'
+          }.\nCheck the leaderboard using '!guesswho leaderboard'`,
         );
-
-        return;
       }
 
       if (choice.guesses.includes(formattedGuess)) {
-        response.send('Someone already guessed that, try something else');
-
-        return;
+        return new Response('Someone already guessed that, try something else');
       }
 
       const pokemonList = getPokemon();
@@ -266,20 +240,20 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
           user,
         });
 
-        response.send(`Nope, it's not ${_.startCase(guess)}, continue guessing!`);
+        let response = `Nope, it's not ${_.startCase(guess)}, continue guessing!`;
 
-        return;
+        if (choice.guesses.length % 5 === 4) {
+          response += "\nStuck? use '!guesswho hint' to get a random Pokédex entry!";
+        }
+
+        return new Response(response);
       }
 
-      response.send("Hmm.. I don't seem to recognize this Pokémon");
-
-      break;
+      return new Response("Hmm.. I don't seem to recognize this Pokémon");
 
     case 'hint':
       if (!choice) {
-        response.send("Game is not running, try '!guesswho start [Gen/type]'");
-
-        return;
+        return new Response("Game is not running, try '!guesswho start [Gen/type]'");
       }
 
       const species = (
@@ -294,20 +268,18 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
       const randomEntry =
         englishDexEntries[Math.floor(Math.random() * englishDexEntries.length)].flavor_text;
 
-      response.send(
+      return new Response(
         randomEntry
           .replace(new RegExp(choice.pokemonName, 'gi'), '[Pokémon]')
           .replaceAll('\n', ' ')
           .substring(0, 400),
       );
 
-      break;
-
     case 'leaderboard':
       const topScores =
         (await sql`SELECT * FROM "Scores" WHERE key = ${key} ORDER BY score DESC LIMIT 5`) as Score[];
 
-      response.send(
+      return new Response(
         `Top guessers: \n${topScores
           .map(
             (scoreObj, index) =>
@@ -317,19 +289,16 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
           )
           .join('; \n')}`,
       );
-      break;
 
     case 'reset':
       if (user !== managerRecord.manager) {
-        response.send('Only the game manager can reset the game');
-
-        return;
+        return new Response('Only the game manager can reset the game');
       }
 
       await sql`DELETE FROM "Choice" WHERE key = ${key}`;
       let responseText = `Reset ${user}'s game`;
 
-      const { payload: deleteUserScore } = request.query;
+      const deleteUserScore = searchParams.get('payload');
 
       if (deleteUserScore === 'true') {
         await sql`DELETE FROM "Scores" WHERE id = ${user} AND key = ${key}`;
@@ -344,15 +313,9 @@ const gameApi = async (request: VercelRequest, response: VercelResponse) => {
         user,
       });
 
-      response.send(responseText);
-
-      break;
+      return new Response(responseText);
 
     default:
-      response.send('Action not recognized');
-
-      break;
+      return new Response('Action not recognized');
   }
 };
-
-export default gameApi;
