@@ -1,23 +1,19 @@
+import axios from 'axios';
 import type { EvolutionChain, Pokemon, PokemonSpecies } from 'pokedex-promise-v2';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { capitalize, isArray, startCase } from 'lodash';
 import { chainFormatter, pokedexGames, vowels } from './_utils';
-import axios from 'axios';
+import { NextRequest } from 'next/server';
 
 const pokedex = axios.create({
   baseURL: 'https://pokeapi.co/api/v2',
 });
 
-const pokedexApi = async (request: VercelRequest, response: VercelResponse) => {
-  response.setHeader('Content-Type', 'text/plain');
+export const GET = async (request: NextRequest) => {
+  const { searchParams } = request.nextUrl;
 
-  const { pokemon, form, info } = request.query;
-
-  console.log(
-    `Request arguments: ${pokemon ? `pokemon: ${pokemon}, ` : ''}${
-      form ? `form: ${form}, ` : ''
-    }${info ? `info: ${info}` : ''}`,
-  );
+  const pokemon = searchParams.get('pokemon');
+  const form = searchParams.get('form');
+  const info = searchParams.get('info');
 
   if (pokemon && !isArray(pokemon) && pokemon !== 'null') {
     const usedForm =
@@ -32,15 +28,9 @@ const pokedexApi = async (request: VercelRequest, response: VercelResponse) => {
         `/pokemon/${usedPokemon.toLowerCase()}${usedForm ? `-${usedForm}` : ''}`,
       );
 
-      console.log(`Pokémon request returned after ${Date.now() - pokemonRequestStartTime} ms`);
-
       const pokemonSpeciesRequestStartTime = Date.now();
       const apiPokemonSpecies = await pokedex.get<PokemonSpecies>(
         `/pokemon-species/${usedPokemon.toLowerCase()}`,
-      );
-
-      console.log(
-        `Pokémon species request returned after ${Date.now() - pokemonSpeciesRequestStartTime} ms`,
       );
 
       const {
@@ -51,10 +41,6 @@ const pokedexApi = async (request: VercelRequest, response: VercelResponse) => {
 
       const EvolutionRequestStartTime = Date.now();
       const evolutionLine = (await axios.get<EvolutionChain>(evolutionChain.url)).data;
-
-      console.log(
-        `Evolution chain request returned after ${Date.now() - EvolutionRequestStartTime} ms`,
-      );
 
       const { types, abilities } = apiPokemon.data;
       const { chain: chainObject } = evolutionLine;
@@ -75,7 +61,7 @@ const pokedexApi = async (request: VercelRequest, response: VercelResponse) => {
         );
 
       if (!info || info === 'generic' || info === 'null') {
-        response.end(
+        return new Response(
           `${capitalize(pokemonName)}${usedForm ? `-${usedForm}` : ''} is a${
             vowels.test(typeString) ? 'n' : ''
           } ${typeString} type Pokémon with the National Pokédex number of ${id}. It has the abilit${
@@ -91,11 +77,11 @@ const pokedexApi = async (request: VercelRequest, response: VercelResponse) => {
           }.`,
         );
       } else if (info === 'evolution') {
-        response.end(
+        return new Response(
           `${capitalize(pokemonName)}'s evolution line includes ${chainFormatter(chainObject)}`,
         );
       } else if (info === 'numbers') {
-        response.end(
+        return new Response(
           `${capitalize(pokemonName)} is ${pokedexNumbers
             .filter((numberObject) => pokedexGames[numberObject.pokedex.name])
             .map((numberObject) => {
@@ -107,22 +93,17 @@ const pokedexApi = async (request: VercelRequest, response: VercelResponse) => {
             .replace(/,([^,]*)$/, ' and$1')}.`,
         );
       } else {
-        console.log('Invalid info argument error');
-        response.end('Info can only be one of: generic, evolution, numbers');
+        return new Response('Info can only be one of: generic, evolution, numbers');
       }
     } catch (error: any) {
-      console.log('API request error:', error.message);
-      response.end(
+      return new Response(
         `Couldn't find Pokémon ${capitalize(pokemon)}${usedForm ? ` with form ${usedForm}` : ''}`,
       );
     }
   } else {
-    console.log('No Pokémon argument. Help message');
-    response.end(`Syntax: !pokedex [pokemon] [info] [form].
+    return new Response(`Syntax: !pokedex [pokemon] [info] [form].
         pokemon: Pokémon name or natDex number.
         info: generic/evolution/numbers.
         form: Pokémon form, use 'default' for regular/no form.`);
   }
 };
-
-export default pokedexApi;
