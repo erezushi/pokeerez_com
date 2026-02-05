@@ -46,7 +46,7 @@ const nextConfig = {
     return [
       {
         source: '/GuessWho',
-        destination: 'https://github.com/erezushi/pokeerez_com/tree/master/api/game',
+        destination: 'https://github.com/erezushi/pokeerez_com/tree/master/app/api/game',
         permanent: false,
         basePath: false,
       },
