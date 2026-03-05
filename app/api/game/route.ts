@@ -40,7 +40,7 @@ const answerReplacements = new Map<string | RegExp, string>([
 ]);
 
 const answerFormat = (name: string) => {
-  let nameCopy = name.toLowerCase().replace(' ', '-');
+  const nameCopy = name.toLowerCase().replace(' ', '-');
 
   answerReplacements.forEach((value, key) => {
     nameCopy.replace(key, value);
@@ -106,7 +106,7 @@ export const GET = async (request: NextRequest) => {
   }
 
   switch (action) {
-    case 'start':
+    case 'start': {
       if (choice) {
         return new Response("Game is already running, try '!guesswho guess [Pokémon]'");
       }
@@ -153,7 +153,8 @@ export const GET = async (request: NextRequest) => {
           VALUES (${key}, ${pokemon.name}, ARRAY[]::text[])`;
 
         const generatedGen = Object.entries(generations).find(
-          ([_, genObject]) => pokemon.dexNo >= genObject.first && pokemon.dexNo <= genObject.last,
+          ([_genNumber, genObject]) =>
+            pokemon.dexNo >= genObject.first && pokemon.dexNo <= genObject.last,
         )![0];
 
         await redis.set(key, {
@@ -173,8 +174,9 @@ export const GET = async (request: NextRequest) => {
       }
 
       return new Response('Filter not a type or a generation number');
+    }
 
-    case 'guess':
+    case 'guess': {
       if (!choice) {
         return new Response("Game is not running, try '!guesswho start [Gen/type]'");
       }
@@ -250,8 +252,9 @@ export const GET = async (request: NextRequest) => {
       }
 
       return new Response("Hmm.. I don't seem to recognize this Pokémon");
+    }
 
-    case 'hint':
+    case 'hint': {
       if (!choice) {
         return new Response("Game is not running, try '!guesswho start [Gen/type]'");
       }
@@ -274,8 +277,9 @@ export const GET = async (request: NextRequest) => {
           .replaceAll('\n', ' ')
           .substring(0, 400),
       );
+    }
 
-    case 'leaderboard':
+    case 'leaderboard': {
       const topScores =
         (await sql`SELECT * FROM "Scores" WHERE key = ${key} ORDER BY score DESC LIMIT 5`) as Score[];
 
@@ -289,8 +293,9 @@ export const GET = async (request: NextRequest) => {
           )
           .join('; \n')}`,
       );
+    }
 
-    case 'reset':
+    case 'reset': {
       if (user !== managerRecord.manager) {
         return new Response('Only the game manager can reset the game');
       }
@@ -314,6 +319,7 @@ export const GET = async (request: NextRequest) => {
       });
 
       return new Response(responseText);
+    }
 
     default:
       return new Response('Action not recognized');
