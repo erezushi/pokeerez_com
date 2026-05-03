@@ -59,7 +59,7 @@ export const GET = async (request: NextRequest) => {
   if (!key || key === 'null' || _.isArray(key)) {
     if (action === 'key') {
       const existingManager = (
-        await sql`SELECT * FROM "Managers" WHERE manager='${user}'`
+        await sql`SELECT * FROM "Managers" WHERE manager = ${user}`
       )[0] as Manager;
 
       if (existingManager) {
@@ -71,7 +71,7 @@ export const GET = async (request: NextRequest) => {
       const newKey = nanoid();
 
       await sql`INSERT INTO "Managers" ("key", "manager")
-        VALUES ('${newKey}', '${user}')`;
+        VALUES (${newKey}, ${user})`;
 
       return new Response(
         `${user} registered as a game manager. Game key is ${newKey}\nKeep it somewhere safe, it will not be shown to you again.`,
