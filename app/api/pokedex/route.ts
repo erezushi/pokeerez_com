@@ -23,12 +23,10 @@ export const GET = async (request: NextRequest) => {
       pokemon === 'random' ? (Math.floor(Math.random() * 1025) + 1).toString() : pokemon;
 
     try {
-      const pokemonRequestStartTime = Date.now();
       const apiPokemon = await pokedex.get<Pokemon>(
         `/pokemon/${usedPokemon.toLowerCase()}${usedForm ? `-${usedForm}` : ''}`,
       );
 
-      const pokemonSpeciesRequestStartTime = Date.now();
       const apiPokemonSpecies = await pokedex.get<PokemonSpecies>(
         `/pokemon-species/${usedPokemon.toLowerCase()}`,
       );
@@ -39,7 +37,6 @@ export const GET = async (request: NextRequest) => {
         name: pokemonName,
       } = apiPokemonSpecies.data;
 
-      const EvolutionRequestStartTime = Date.now();
       const evolutionLine = (await axios.get<EvolutionChain>(evolutionChain.url)).data;
 
       const { types, abilities } = apiPokemon.data;
@@ -95,7 +92,7 @@ export const GET = async (request: NextRequest) => {
       } else {
         return new Response('Info can only be one of: generic, evolution, numbers');
       }
-    } catch (error: any) {
+    } catch (error) {
       return new Response(
         `Couldn't find Pokémon ${capitalize(pokemon)}${usedForm ? ` with form ${usedForm}` : ''}`,
       );

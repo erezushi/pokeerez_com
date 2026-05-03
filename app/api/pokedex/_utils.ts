@@ -226,4 +226,3 @@ export const pokedexGames: Record<string, string> = {
   kitakami: 'Kitakami',
   blueberry: 'Blueberry',
 };
-
