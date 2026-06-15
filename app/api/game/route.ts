@@ -74,11 +74,12 @@ export const GET = async (request: NextRequest) => {
         VALUES (${newKey}, ${user})`;
 
       return new Response(
-        `${user} registered as a game manager. Game key is ${newKey}\nKeep it somewhere safe, it will not be shown to you again.`,
+        `${user} registered as a game manager. Game key is ${newKey}
+        Keep it somewhere safe, it will not be shown to you again.`,
       );
     } else {
       return new Response(
-        'Missing game key. Need to make one? head over to https://github.com/erezushi/pokeerez_com/tree/master/api/game and follow the instructions',
+        'Missing game key. Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions',
       );
     }
   }
@@ -87,7 +88,7 @@ export const GET = async (request: NextRequest) => {
 
   if (!managerRecord) {
     return new Response(
-      'Game key not recognized. Need to make one? head over to https://github.com/erezushi/pokeerez_com/tree/master/api/game and follow the instructions',
+      'Game key not recognized. Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions',
     );
   }
 
