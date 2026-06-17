@@ -79,7 +79,8 @@ export const GET = async (request: NextRequest) => {
       );
     } else {
       return new Response(
-        'Missing game key. Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions',
+        `Missing game key. Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions
+        Lost your key? contact gwkey@pokeerez.com, specifying the manager's username for recovery`,
       );
     }
   }
