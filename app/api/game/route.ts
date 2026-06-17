@@ -58,38 +58,49 @@ export const GET = async (request: NextRequest) => {
 
   if (!key || key === 'null' || _.isArray(key)) {
     if (action === 'key') {
-      const existingManager = (
-        await sql`SELECT * FROM "Managers" WHERE manager = ${user}`
-      )[0] as Manager;
+      if (user && user !== 'null' && !_.isArray(user)) {
+        const existingManager = (
+          await sql`SELECT * FROM "Managers" WHERE manager = ${user}`
+        )[0] as Manager;
 
-      if (existingManager) {
-        return new Response('Username already registered');
-      }
+        if (existingManager) {
+          return new Response('Username already registered');
+        }
 
-      const { nanoid } = await import('nanoid');
+        const { nanoid } = await import('nanoid');
 
-      const newKey = nanoid();
+        const newKey = nanoid();
 
-      await sql`INSERT INTO "Managers" ("key", "manager")
+        await sql`INSERT INTO "Managers" ("key", "manager")
         VALUES (${newKey}, ${user})`;
 
-      return new Response(
-        `${user} registered as a game manager. Game key is ${newKey}
-        Keep it somewhere safe, it will not be shown to you again.`,
-      );
-    } else {
-      return new Response(
-        `Missing game key. Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions
-        Lost your key? contact gwkey@pokeerez.com, specifying the manager's username for recovery`,
-      );
+        return new Response(
+          [
+            `${user} registered as a game manager. Game key is ${newKey}`,
+            'Keep it somewhere safe, it will not be shown to you again.',
+          ].join('\n'),
+        );
+      }
+      return new Response('No user specified');
     }
+    return new Response(
+      [
+        'Missing game key.',
+        'Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions',
+        "Lost your key? contact gwkey@pokeerez.com, specifying the manager's username for recovery",
+      ].join('\n'),
+    );
   }
 
   const managerRecord = (await sql`SELECT * FROM "Managers" WHERE key = ${key}`)[0] as Manager;
 
   if (!managerRecord) {
     return new Response(
-      'Game key not recognized. Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions',
+      [
+        'Game key not recognized.',
+        'Need to make one? head over to https://PokeErez.com/guessWho and follow the instructions',
+        "Lost your key? contact gwkey@pokeerez.com, specifying the manager's username for recovery",
+      ].join('\n'),
     );
   }
 
