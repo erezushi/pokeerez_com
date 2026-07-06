@@ -137,8 +137,6 @@ export const GET = async (request: NextRequest) => {
             .replace(/, $/, '.')
             .replace(/, it(?!.*, it)/, ' and it'),
         );
-
-        // return new Response(JSON.stringify(multipliers, null, 2));
       } else {
         return new Response('Info can only be one of: generic, evolution, numbers, weakness');
       }
