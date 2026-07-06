@@ -26,7 +26,8 @@ export const GET = async (request: NextRequest) => {
       );
       const apiPokemonSpecies = await pokedex.getPokemonSpeciesByName(usedPokemon.toLowerCase());
 
-      const { id: natDexNo, name } = apiPokemon;
+      const { name } = apiPokemon;
+      const { id: natDexNo } = apiPokemonSpecies;
 
       const pokemonName = name
         .split('-')
