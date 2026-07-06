@@ -1,12 +1,9 @@
-import axios from 'axios';
-import type { EvolutionChain, Pokemon, PokemonSpecies } from 'pokedex-promise-v2';
+import Pokedex from 'pokedex-promise-v2';
 import { capitalize, isArray, startCase } from 'lodash';
 import { chainFormatter, pokedexGames, vowels } from './_utils';
 import { NextRequest } from 'next/server';
 
-const pokedex = axios.create({
-  baseURL: 'https://pokeapi.co/api/v2',
-});
+const pokedex = new Pokedex();
 
 export const GET = async (request: NextRequest) => {
   const { searchParams } = request.nextUrl;
@@ -23,45 +20,31 @@ export const GET = async (request: NextRequest) => {
       pokemon === 'random' ? (Math.floor(Math.random() * 1025) + 1).toString() : pokemon;
 
     try {
-      const apiPokemon = await pokedex.get<Pokemon>(
-        `/pokemon/${usedPokemon.toLowerCase()}${usedForm ? `-${usedForm}` : ''}`,
+      const apiPokemon = await pokedex.getPokemonByName(
+        `${usedPokemon.toLowerCase()}${usedForm ? `-${usedForm}` : ''}`,
       );
+      const apiPokemonSpecies = await pokedex.getPokemonSpeciesByName(usedPokemon.toLowerCase());
 
-      const apiPokemonSpecies = await pokedex.get<PokemonSpecies>(
-        `/pokemon-species/${usedPokemon.toLowerCase()}`,
-      );
-
-      const {
-        evolution_chain: evolutionChain,
-        pokedex_numbers: pokedexNumbers,
-        name: pokemonName,
-      } = apiPokemonSpecies.data;
-
-      const evolutionLine = (await axios.get<EvolutionChain>(evolutionChain.url)).data;
-
-      const { types, abilities } = apiPokemon.data;
-      const { chain: chainObject } = evolutionLine;
-
-      const id = pokedexNumbers.find(
-        (numberObject) => numberObject.pokedex.name === 'national',
-      )?.entry_number;
-
-      const typeString = types.map((typeObject) => capitalize(typeObject.type.name)).join(' / ');
-
-      const regularAbilities = abilities.filter((abilityObject) => !abilityObject.is_hidden);
-      const hiddenAbility = abilities.find((abilityObject) => abilityObject.is_hidden);
-
-      const isHiddenDuplicate =
-        hiddenAbility &&
-        regularAbilities.some(
-          (regularAbility) => regularAbility.ability.name === hiddenAbility.ability.name,
-        );
+      const { name: pokemonName } = apiPokemonSpecies;
+      const { id: natDexNo } = apiPokemon;
 
       if (!info || info === 'generic' || info === 'null') {
+        const { types, abilities } = apiPokemon;
+
+        const typeString = types.map((typeObject) => capitalize(typeObject.type.name)).join(' / ');
+
+        const regularAbilities = abilities.filter((abilityObject) => !abilityObject.is_hidden);
+        const hiddenAbility = abilities.find((abilityObject) => abilityObject.is_hidden);
+
+        const isHiddenDuplicate =
+          hiddenAbility &&
+          regularAbilities.some(
+            (regularAbility) => regularAbility.ability.name === hiddenAbility.ability.name,
+          );
         return new Response(
           `${capitalize(pokemonName)}${usedForm ? `-${usedForm}` : ''} is a${
             vowels.test(typeString) ? 'n' : ''
-          } ${typeString} type Pokémon with the National Pokédex number of ${id}. It has the abilit${
+          } ${typeString} type Pokémon with the National Pokédex number of ${natDexNo}. It has the abilit${
             regularAbilities.length === 1 ? 'y' : 'ies'
           } ${regularAbilities
             .map((abilityObject) => {
@@ -74,12 +57,16 @@ export const GET = async (request: NextRequest) => {
           }.`,
         );
       } else if (info === 'evolution') {
+        const evolutionLine = await pokedex.getEvolutionChainById(
+          Number(apiPokemonSpecies.evolution_chain.url.split('/').at(-2)),
+        );
+
         return new Response(
-          `${capitalize(pokemonName)}'s evolution line includes ${chainFormatter(chainObject)}`,
+          `${capitalize(pokemonName)}'s evolution line includes ${chainFormatter(evolutionLine.chain)}`,
         );
       } else if (info === 'numbers') {
         return new Response(
-          `${capitalize(pokemonName)} is ${pokedexNumbers
+          `${capitalize(pokemonName)} is ${apiPokemonSpecies.pokedex_numbers
             .filter((numberObject) => pokedexGames[numberObject.pokedex.name])
             .map((numberObject) => {
               const { entry_number: number, pokedex } = numberObject;
