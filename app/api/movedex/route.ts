@@ -26,8 +26,13 @@ export const GET = async (request: NextRequest) => {
       const { name: typeName } = type;
       const { name: categoryName } = damage_class;
       const description = flavor_text_entries
-        .filter((entry) => entry.language.name === 'en')
-        .at(-1)?.flavor_text;
+        .filter(
+          (entry) =>
+            entry.language.name === 'en' &&
+            !entry.flavor_text.startsWith('This move can’t be used'),
+        )
+        .at(-1)
+        ?.flavor_text.replace('\n', ' ');
 
       let res = `${startCase(moveName)} is ${vowels.test(typeName) ? 'an' : 'a'} ${capitalize(typeName)}-type ${capitalize(categoryName)} move with `;
 
