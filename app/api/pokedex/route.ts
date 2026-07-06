@@ -137,8 +137,21 @@ export const GET = async (request: NextRequest) => {
             .replace(/, $/, '.')
             .replace(/, it(?!.*, it)/, ' and it'),
         );
+      } else if (info === 'stats') {
+        const STAT_NAMES = ['HP', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed'];
+        const { stats } = apiPokemon;
+        const bst = stats.reduce((currentTotal, statObj) => currentTotal + statObj.base_stat, 0);
+
+        return new Response(
+          `${pokemonName}'s base stats are ${stats
+            .map((statObj, index) => `${statObj.base_stat} ${STAT_NAMES[index]}`)
+            .join(', ')
+            .replace(/,([^,]*)$/, ' and$1')}. That's a total of ${bst}.`,
+        );
       } else {
-        return new Response('Info can only be one of: generic, evolution, numbers, weakness');
+        return new Response(
+          'Info can only be one of: generic, evolution, numbers, weakness, stats',
+        );
       }
     } catch (error) {
       return new Response(
@@ -148,7 +161,7 @@ export const GET = async (request: NextRequest) => {
   } else {
     return new Response(`Syntax: !pokedex [pokemon] [info] [form].
         pokemon: Pokémon name or natDex number.
-        info: generic/evolution/numbers/weakness.
+        info: generic/evolution/numbers/weakness/stats.
         form: Pokémon form, use 'default' for regular/no form.`);
   }
 };
