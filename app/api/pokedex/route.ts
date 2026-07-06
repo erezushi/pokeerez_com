@@ -25,8 +25,12 @@ export const GET = async (request: NextRequest) => {
       );
       const apiPokemonSpecies = await pokedex.getPokemonSpeciesByName(usedPokemon.toLowerCase());
 
-      const { name: pokemonName } = apiPokemonSpecies;
-      const { id: natDexNo } = apiPokemon;
+      const { id: natDexNo, name } = apiPokemon;
+
+      const pokemonName = name
+        .split('-')
+        .map((namePart) => capitalize(namePart))
+        .join('-');
 
       if (!info || info === 'generic' || info === 'null') {
         const { types, abilities } = apiPokemon;
@@ -42,7 +46,7 @@ export const GET = async (request: NextRequest) => {
             (regularAbility) => regularAbility.ability.name === hiddenAbility.ability.name,
           );
         return new Response(
-          `${capitalize(pokemonName)}${usedForm ? `-${usedForm}` : ''} is a${
+          `${pokemonName} is a${
             vowels.test(typeString) ? 'n' : ''
           } ${typeString} type Pokémon with the National Pokédex number of ${natDexNo}. It has the abilit${
             regularAbilities.length === 1 ? 'y' : 'ies'
@@ -62,11 +66,11 @@ export const GET = async (request: NextRequest) => {
         );
 
         return new Response(
-          `${capitalize(pokemonName)}'s evolution line includes ${chainFormatter(evolutionLine.chain)}`,
+          `${pokemonName}'s evolution line includes ${chainFormatter(evolutionLine.chain)}`,
         );
       } else if (info === 'numbers') {
         return new Response(
-          `${capitalize(pokemonName)} is ${apiPokemonSpecies.pokedex_numbers
+          `${pokemonName} is ${apiPokemonSpecies.pokedex_numbers
             .filter((numberObject) => pokedexGames[numberObject.pokedex.name])
             .map((numberObject) => {
               const { entry_number: number, pokedex } = numberObject;
