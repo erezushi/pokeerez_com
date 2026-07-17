@@ -83,13 +83,37 @@ export const GET = async (request: NextRequest) => {
             .replace(/,([^,]*)$/, ' and$1')}.`,
         );
       } else if (info === 'weakness') {
+        type PokemonType = keyof typeof typeList;
         const typeList = getTypes();
         const multipliers = Object.fromEntries(
           Object.entries(typeList).map(([typeName]) => [typeName, 1]),
         );
+        const effectivenessAbilities: {
+          name: string;
+          immune?: PokemonType;
+          resist?: PokemonType | `${PokemonType} ${PokemonType}`;
+          weak?: PokemonType;
+        }[] = [
+          { name: 'earth-eater', immune: 'ground' },
+          { name: 'eelevate', immune: 'ground' },
+          { name: 'flash-fire', immune: 'fire' },
+          { name: 'fluffy', weak: 'fire' },
+          { name: 'heatproof', resist: 'fire' },
+          { name: 'levitate', immune: 'ground' },
+          { name: 'lightning-rod', immune: 'electric' },
+          { name: 'motor-drive', immune: 'electric' },
+          { name: 'purifying-salt', resist: 'ghost' },
+          { name: 'sap-sipper', immune: 'grass' },
+          { name: 'storm-drain', immune: 'water' },
+          { name: 'thick-fat', resist: 'grass ice' },
+          { name: 'volt-absorb', immune: 'electric' },
+          { name: 'water-absorb', immune: 'water' },
+          { name: 'water-bubble', resist: 'fire' },
+          { name: 'well-baked-body', immune: 'fire' },
+        ];
 
         apiPokemon.types.forEach((typeObj) => {
-          const typeName = typeObj.type.name as keyof typeof typeList;
+          const typeName = typeObj.type.name as PokemonType;
           const { vulnerable, resists, immune } = typeList[typeName];
 
           if (vulnerable !== '') {
@@ -123,21 +147,87 @@ export const GET = async (request: NextRequest) => {
             .map(([type]) => capitalize(type)),
         };
 
-        return new Response(
-          `Ignoring abilities and special conditions, ${pokemonName} is weak to ${results.weakTo
-            .join(', ')
-            .replace(/,([^,]*)$/, ' and$1')}, ${
-            results.resists.length
-              ? `it resists ${results.resists.join(', ').replace(/,([^,]*)$/, ' and$1')}, `
-              : ''
-          }${
-            results.immuneTo.length
-              ? `it's immune to ${results.immuneTo.join(', ').replace(/,([^,]*)$/, ' and$1')}, `
-              : ''
-          }`
-            .replace(/, $/, '.')
-            .replace(/, it(?!.*, it)/, ' and it'),
+        let response = `Ignoring special conditions, ${pokemonName} is weak to ${results.weakTo
+          .join(', ')
+          .replace(/,([^,]*)$/, ' and$1')},`;
+
+        if (results.resists.length)
+          response += ` it resists ${results.resists.join(', ').replace(/,([^,]*)$/, ' and$1')},`;
+
+        if (results.immuneTo.length)
+          response += ` it's immune to ${results.immuneTo.join(', ').replace(/,([^,]*)$/, ' and$1')},`;
+
+        response = response.replace(/,$/, '.').replace(/, it(?!.*, it)/, ' and it');
+
+        const changingAbilities = effectivenessAbilities.filter((effAbility) =>
+          apiPokemon.abilities.some((pokeAbility) => pokeAbility.ability.name === effAbility.name),
         );
+
+        if (changingAbilities.length) {
+          changingAbilities.forEach((ability) => {
+            response += ` When it has the ${startCase(ability.name)} ability, it becomes `;
+
+            if (ability.immune) {
+              response += `immune to ${capitalize(ability.immune)}.`;
+            } else if (ability.resist) {
+              response +=
+                ability.resist
+                  .split(' ')
+                  .map((resistType) => {
+                    let retString = '';
+
+                    switch (multipliers[resistType as PokemonType]) {
+                      case 0.25:
+                        retString += 'even more resistant ';
+                        break;
+                      case 0.5:
+                        retString += 'more resistant ';
+                        break;
+                      case 1:
+                        retString += 'resistant ';
+                        break;
+                      case 2:
+                        retString += 'not weak ';
+                        break;
+                      case 4:
+                        retString += 'not as weak ';
+                        break;
+                      default:
+                        break;
+                    }
+
+                    retString += `to ${capitalize(resistType)}`;
+
+                    return retString;
+                  })
+                  .join(' and ') + '.';
+            } else if (ability.weak) {
+              switch (multipliers[ability.weak]) {
+                case 0.25:
+                  response += 'less resistant ';
+                  break;
+                case 0.5:
+                  response += 'not resistant ';
+                  break;
+                case 1:
+                  response += 'weak ';
+                  break;
+                case 2:
+                  response += 'weaker ';
+                  break;
+                case 4:
+                  response += 'even weaker ';
+                  break;
+                default:
+                  break;
+              }
+
+              response += `to ${capitalize(ability.weak)}`;
+            }
+          });
+        }
+
+        return new Response(response);
       } else if (info === 'stats') {
         const STAT_NAMES = ['HP', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed'];
         const { stats } = apiPokemon;
