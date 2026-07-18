@@ -168,7 +168,14 @@ export const GET = async (request: NextRequest) => {
             response += ` When it has the ${startCase(ability.name)} ability, it becomes `;
 
             if (ability.immune) {
-              response += `immune to ${capitalize(ability.immune)}.`;
+              if (multipliers[ability.immune] === 0) {
+                response = response.replace(
+                  /When it has.*/,
+                  `Although it has the ${startCase(ability.name)} ability, it's already immune to ${capitalize(ability.immune)}`,
+                );
+              } else {
+                response += `immune to ${capitalize(ability.immune)}.`;
+              }
             } else if (ability.resist) {
               response +=
                 ability.resist
