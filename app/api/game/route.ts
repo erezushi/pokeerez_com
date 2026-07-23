@@ -236,7 +236,7 @@ export const GET = async (request: NextRequest) => {
       }
 
       if (choice.guesses.includes(formattedGuess)) {
-        return new Response('Someone already guessed that, try something else');
+        return new Response(`Someone already guessed ${_.startCase(guess)}, try something else`);
       }
 
       const pokemonList = getPokemon();
@@ -264,7 +264,7 @@ export const GET = async (request: NextRequest) => {
         return new Response(response);
       }
 
-      return new Response("Hmm.. I don't seem to recognize this Pokémon");
+      return new Response(`Hmm.. I don't know a Pokémon named ${_.startCase(guess)}`);
     }
 
     case 'hint': {
