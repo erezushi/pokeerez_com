@@ -1,5 +1,6 @@
 import { startCase } from 'lodash';
 import { Chain, EvolutionDetail } from 'pokedex-promise-v2';
+import { PokemonType } from '@erezushi/pokemon-randomizer';
 
 export const vowels = /^[AEIOUaeiou]/;
 
@@ -226,3 +227,27 @@ export const pokedexGames: Record<string, string> = {
   kitakami: 'Kitakami',
   blueberry: 'Blueberry',
 };
+
+export const effectivenessAbilities: {
+  name: string;
+  immune?: PokemonType;
+  resist?: PokemonType | `${PokemonType} ${PokemonType}`;
+  weak?: PokemonType;
+}[] = [
+  { name: 'earth-eater', immune: 'ground' },
+  { name: 'eelevate', immune: 'ground' },
+  { name: 'flash-fire', immune: 'fire' },
+  { name: 'fluffy', weak: 'fire' },
+  { name: 'heatproof', resist: 'fire' },
+  { name: 'levitate', immune: 'ground' },
+  { name: 'lightning-rod', immune: 'electric' },
+  { name: 'motor-drive', immune: 'electric' },
+  { name: 'purifying-salt', resist: 'ghost' },
+  { name: 'sap-sipper', immune: 'grass' },
+  { name: 'storm-drain', immune: 'water' },
+  { name: 'thick-fat', resist: 'fire ice' },
+  { name: 'volt-absorb', immune: 'electric' },
+  { name: 'water-absorb', immune: 'water' },
+  { name: 'water-bubble', resist: 'fire' },
+  { name: 'well-baked-body', immune: 'fire' },
+];
