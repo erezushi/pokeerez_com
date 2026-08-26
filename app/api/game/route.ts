@@ -40,10 +40,10 @@ const answerReplacements = new Map<string | RegExp, string>([
 ]);
 
 const answerFormat = (name: string) => {
-  const nameCopy = name.toLowerCase().replace(' ', '-');
+  let nameCopy = name.toLowerCase().replace(' ', '-');
 
   answerReplacements.forEach((value, key) => {
-    nameCopy.replace(key, value);
+    nameCopy = nameCopy.replaceAll(key, value);
   });
 
   return nameCopy;
