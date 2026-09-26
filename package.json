@@ -35,7 +35,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vercel/node": "^13.0.1",
-    "eslint": "^10.10.0",
+    "eslint": "^10.11.0",
     "eslint-plugin-prettier": "^5.5.6",
     "jiti": "^2.7.0",
     "pokedex-promise-v2": "^4.2.3",
